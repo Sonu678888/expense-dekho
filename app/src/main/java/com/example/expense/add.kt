@@ -78,7 +78,7 @@ fun Add(navController: NavController,addViewModel: AddViewModel=viewModel()){
                     .clip(RoundedCornerShape(16.dp))
                     .background(BackgroundElevated)
                     .fillMaxWidth()){
-                    TableRow(" Amount",content={
+                    TableRow(label=" Amount", detailContent = {
                         SimpleTextField(value = state.amount,
                             onValueChange ={addViewModel.setAmount(it)},
                             modifier=Modifier.fillMaxWidth(),
@@ -92,11 +92,11 @@ fun Add(navController: NavController,addViewModel: AddViewModel=viewModel()){
                     var dateshow by remember {
                         mutableStateOf(false)
                     }
-                    TableRow(" Date"){
+                    TableRow(label=" Date", detailContent = {
                         TextButton(onClick = { dateshow=true },shape= RoundedCornerShape(8.dp)) {
 
                             Text(state.date.toString())
-                            
+
                         }
                         if(dateshow){
                             com.marosseleng.compose.material3.datetimepickers.date.ui.dialog.DatePickerDialog(
@@ -105,18 +105,20 @@ fun Add(navController: NavController,addViewModel: AddViewModel=viewModel()){
                                     addViewModel.setDate(it)
                                     dateshow=false
 
-                                               },
+                                },
                                 initialDate = LocalDate.now(),
                                 title = {(Text("Select Date",style= Typography.titleMedium))}
                             )
 //
 //                        )
                         }
+                    }){
+
 //
 
                     }
                     Divider(modifier=Modifier.padding(start=16.dp),thickness=1.dp,color= DividerColor)
-                    TableRow(" Note",content={
+                    TableRow(label=" Note",detailContent={
                         SimpleTextField(value = state.note,
                             onValueChange ={addViewModel.setnote(it)},
                             modifier=Modifier.fillMaxWidth(),
@@ -125,20 +127,20 @@ fun Add(navController: NavController,addViewModel: AddViewModel=viewModel()){
                         )
                     })
                     Divider(modifier=Modifier.padding(start=16.dp),thickness=1.dp,color= DividerColor)
-                    TableRow(" category"){
-                        var categoryopened by remember {
-                            mutableStateOf(false)
-                        }
+                    TableRow(label=" category", detailContent = {var categoryopened by remember {
+                        mutableStateOf(false)
+                    }
                         TextButton(onClick = { categoryopened=true },shape= RoundedCornerShape(8.dp) ) {
                             Text(state.category?:" Choose Category ", textAlign = TextAlign.End)
                             DropdownMenu(expanded = categoryopened, onDismissRequest = { categoryopened=false }) {
                                 categories.forEach {category ->
                                     DropdownMenuItem(text = { Text(category) }, onClick = { addViewModel.setcategory(category)
-                                    categoryopened=false})
+                                        categoryopened=false})
                                 }
                             }
 
-                        }
+                        }}){
+
 
                     }
                 }

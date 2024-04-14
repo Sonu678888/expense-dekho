@@ -24,15 +24,22 @@ import com.example.expense.ui.theme.destroy
 
 
 @Composable
-fun TableRow(label:String,modifier:Modifier=Modifier,Arrow:Boolean=false,isdestroy:Boolean=false,content:(@Composable RowScope.()->Unit)?=null){
+fun TableRow(modifier:Modifier=Modifier,label:String?=null,Arrow:Boolean=false,isdestroy:Boolean=false,detailContent:(@Composable RowScope.()->Unit)?=null,Content:(@Composable RowScope.()->Unit)?=null){
     val textcolor=if(isdestroy)destroy else TextPrimary
     Row(
             modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
 
-        ) {
-            Text(label, style = Typography.bodyMedium, color = textcolor,modifier=Modifier.padding(vertical=10.dp))
+        )
+    {
+        if(label!=null){
+            Text(text=label, style = Typography.bodyMedium, color = textcolor,modifier=Modifier.padding(vertical=10.dp))
+
+        }
+        if(Content!=null){
+            Content()
+        }
             if (Arrow) {
                 Icon(
                     painter = painterResource(id = R.drawable.chevron_right_fill0_wght400_grad0_opsz24),
@@ -40,8 +47,8 @@ fun TableRow(label:String,modifier:Modifier=Modifier,Arrow:Boolean=false,isdestr
                     modifier=Modifier.padding(vertical=10.dp)
                 )
             }
-        if(content!=null){
-            content()
+        if(detailContent!=null){
+            detailContent()
         }
         }
     }
