@@ -69,5 +69,5 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.3")
     implementation("com.marosseleng.android:compose-material3-datetime-pickers:0.6.0")
     implementation ("com.github.skydoves:colorpicker-compose:1.0.0")
-
+    implementation ("me.saket.swipe:swipe:1.0.0")
 }

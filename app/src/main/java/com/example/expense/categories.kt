@@ -23,7 +23,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.ArrowBack
+import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
+import androidx.compose.material3.DismissDirection
+import androidx.compose.material3.DismissValue
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -32,9 +35,11 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,6 +47,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModel
@@ -54,12 +60,15 @@ import com.example.expense.ui.theme.Primary
 import com.example.expense.ui.theme.Shapes
 import com.example.expense.ui.theme.Surface
 import com.example.expense.ui.theme.Typography
+import com.example.expense.ui.theme.destroy
 import com.example.expense.ui.theme.topAppBarBackground
 import com.github.skydoves.colorpicker.compose.AlphaSlider
 import com.github.skydoves.colorpicker.compose.AlphaTile
 import com.github.skydoves.colorpicker.compose.BrightnessSlider
 import com.github.skydoves.colorpicker.compose.HsvColorPicker
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -109,18 +118,45 @@ fun Categories(navController: NavController,vm:CategoriesViewModel=viewModel()) 
 
                     {
 
-                        itemsIndexed(uiState.categories) { index, category ->
-                            TableRow(){
-                                Row(verticalAlignment = Alignment.CenterVertically,modifier=Modifier.padding(horizontal=10.dp)) {
-                                  Surface(color=category.color,shape= CircleShape,
-                                      border= BorderStroke(width=1.dp,color=Color.White
-                                         ),
-                                      modifier=Modifier.size(12.dp)
-
-                                  ) {}
-                                    Text(category.name,modifier=Modifier.padding(horizontal = 16.dp, vertical = 10.dp), style = Typography.bodyMedium)
+                        itemsIndexed(uiState.categories, key = {_,category->category.name}) { index, category ->
+                            val swipeableState= rememberDismissState(
+                                positionalThreshold ={float->float/3},
+                                confirmValueChange = {value->
+                                    if(value== DismissValue.valueOf("DismissedToStart")){
+                                        vm.deleteCategory(category)
+                                        true
+                                    }
+                                    else{
+                                        false
+                                    }
                                 }
+                            )
+                            SwipeableActionsBox(
+                                endActions = listOf(
+                                    SwipeAction(
+                                        icon= painterResource(id = R.drawable.delete_fill0_wght400_grad0_opsz24),
+                                        background = Color.Red,
+                                        onSwipe = {vm.deleteCategory(category)}
+                                    )
+                                )
+                            ) {
+                                TableRow(modifier = Modifier.background(
+                                    BackgroundElevated)){
+                                    Row(verticalAlignment = Alignment.CenterVertically,modifier=Modifier.padding(horizontal=10.dp)) {
+                                        Surface(color=category.color,shape= CircleShape,
+                                            border= BorderStroke(width=1.dp,color=Color.White
+                                            ),
+                                            modifier=Modifier.size(12.dp)
+
+                                        ) {}
+                                        Text(category.name,modifier=Modifier.padding(horizontal = 16.dp, vertical = 10.dp), style = Typography.bodyMedium)
+                                    }
+                                }
+
                             }
+
+
+
                             if (index < uiState.categories.size - 1) {
                                 Divider(
                                     modifier = Modifier.padding(start = 16.dp),

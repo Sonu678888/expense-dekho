@@ -70,13 +70,26 @@ class CategoriesViewModel:ViewModel(){
                 currentState.copy(categories=newCategories,
                     newCategoryName = "",
                     newCategoryColor = Color.White)
-
-
             }
 
 
 
         }
+
+    fun deleteCategory(category: Category){
+        val  index=_uiState.value.categories.indexOf(category)
+        val newList= mutableListOf<Category>()
+        newList.addAll(_uiState.value.categories)
+        newList.removeAt(index)
+
+        _uiState.update { currentState->
+            currentState.copy(
+                categories = newList
+            )
+        }
+
+
+    }
 
 }
 
