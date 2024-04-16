@@ -35,7 +35,7 @@ import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.SwipeToDismiss
+
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
@@ -115,12 +115,10 @@ fun Categories(navController: NavController,vm:CategoriesViewModel=viewModel()) 
                             .background(BackgroundElevated)
                             .fillMaxWidth()
                     )
-
                     {
-
-                        itemsIndexed(uiState.categories, key = {_,category->category.name}) { index, category ->
-                            val swipeableState= rememberDismissState(
-                                positionalThreshold ={float->float/3},
+                        itemsIndexed(uiState.categories) { index, category ->
+                            val swipeableState = rememberDismissState(
+                                positionalThreshold ={float->float/ 4},
                                 confirmValueChange = {value->
                                     if(value== DismissValue.valueOf("DismissedToStart")){
                                         vm.deleteCategory(category)
@@ -175,8 +173,8 @@ fun Categories(navController: NavController,vm:CategoriesViewModel=viewModel()) 
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    if (uiState.colorPickerShow) {
-                        Dialog(onDismissRequest = vm::HideColorPicker) {
+                    if (uiState.colorPickerShowing) {
+                        Dialog(onDismissRequest = vm::hideColorPicker) {
 
                             Surface(color = BackgroundElevated, shape = Shapes.large) {
                                 Column(
@@ -218,7 +216,7 @@ fun Categories(navController: NavController,vm:CategoriesViewModel=viewModel()) 
                                     )
 //
                                     TextButton(
-                                        onClick = vm::HideColorPicker, modifier = Modifier
+                                        onClick = vm::hideColorPicker, modifier = Modifier
                                             .fillMaxWidth()
                                             .padding(top = 24.dp)
                                     ) {
@@ -233,7 +231,7 @@ fun Categories(navController: NavController,vm:CategoriesViewModel=viewModel()) 
                     }
 
                     Surface(
-                        onClick = vm::ShowColorPicker,
+                        onClick = vm::showColorPicker,
                         shape = CircleShape,
                         color = uiState.newCategoryColor,
                         border = BorderStroke(width = 2.dp, color = Color.White),
@@ -260,6 +258,7 @@ fun Categories(navController: NavController,vm:CategoriesViewModel=viewModel()) 
                                 value = uiState.newCategoryName,
                                 onValueChange = vm::setNewCategoryName,
                                 modifier = Modifier.fillMaxWidth(),
+                                placeholder = {Text(text = "Add new category")},
                                 maxLines = 1
                             )
 
@@ -267,8 +266,9 @@ fun Categories(navController: NavController,vm:CategoriesViewModel=viewModel()) 
 
                     }
                     IconButton(
-                        onClick = vm::CreateNewCategory,
-                        modifier = Modifier.padding(16.dp)
+                        onClick = vm::createNewCategory,
+                        modifier = Modifier.padding(16.dp),
+
                     ) {
                         Icon(Icons.Rounded.Add, contentDescription = null)
 

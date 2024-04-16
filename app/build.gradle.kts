@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id ("io.sentry.android.gradle" )version "3.4.2"
+    id ("io.realm.kotlin")
 }
 
 android {
@@ -59,6 +61,16 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.navigation:navigation-compose:2.7.3")
+    implementation("com.marosseleng.android:compose-material3-datetime-pickers:0.6.0")
+    implementation ("com.github.skydoves:colorpicker-compose:1.0.0")
+    implementation ("me.saket.swipe:swipe:1.0.0")
+    implementation ("com.github.tehras:charts:0.2.4-alpha")
+    implementation  ("io.sentry:sentry-android:6.13.1")
+    implementation ("io.sentry:sentry-compose-android:6.13.1")
+    implementation ("io.github.serpro69:kotlin-faker:1.13.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation ("com.google.accompanist:accompanist-pager:0.29.1-alpha")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -66,8 +78,8 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation("androidx.navigation:navigation-compose:2.7.3")
-    implementation("com.marosseleng.android:compose-material3-datetime-pickers:0.6.0")
-    implementation ("com.github.skydoves:colorpicker-compose:1.0.0")
-    implementation ("me.saket.swipe:swipe:1.0.0")
+
+
+
+
 }
