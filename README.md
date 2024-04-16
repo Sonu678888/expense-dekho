@@ -1,6 +1,6 @@
 
 
-#  ₹ Expense Dekho ₹
+#  ₹ Xpense Dekho ₹
 
 Welcome to the Expense Tracker App repository! This app helps you keep track of your expenses conveniently but still it is in developing mode as i have used mock data to test it. Later I will integrate database to store the data given by user
 ## Features
