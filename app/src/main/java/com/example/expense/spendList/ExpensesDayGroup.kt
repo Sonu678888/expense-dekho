@@ -43,7 +43,7 @@ fun ExpensesDayGroup(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Total:", style = Typography.bodyMedium, color = LabelSecondary)
+            Text(" Total :", style = Typography.bodyMedium, color = LabelSecondary)
             Text(
                 DecimalFormat("₹ 0.#").format(dayExpenses.total.toInt()),
                 style = Typography.headlineMedium,

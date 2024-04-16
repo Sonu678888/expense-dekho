@@ -57,7 +57,7 @@ fun Expenses(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        "Total for:",
+                        "See for :",
                         style = Typography.bodyMedium,
                     )
                     chooser(

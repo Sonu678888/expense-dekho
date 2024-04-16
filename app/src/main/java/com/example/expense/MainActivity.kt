@@ -60,7 +60,7 @@ class MainActivity : ComponentActivity() {
                                     selected = backStackEntry?.destination?.route == "reports",
                                     onClick = { navController.navigate("reports") },
                                     label = {
-                                        Text("Reports")
+                                        Text("Analysis")
                                     },
                                     icon = {
                                         Icon(
