@@ -35,7 +35,7 @@ fun MonthlyChart(expenses: List<Expense>, month: LocalDate) {
                             label = "$i",
                             value = groupedExpenses[i]?.total?.toFloat()
                                 ?: 0f,
-                            color = Color.Blue,
+                            color = Color.Cyan,
                         )
                     )
                 }

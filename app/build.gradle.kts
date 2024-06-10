@@ -71,6 +71,13 @@ dependencies {
     implementation ("io.github.serpro69:kotlin-faker:1.13.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation ("com.google.accompanist:accompanist-pager:0.29.1-alpha")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.27.0")
+    implementation("io.coil-kt:coil-gif:2.1.0")
+    implementation ("io.coil-kt:coil-compose:2.1.0")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

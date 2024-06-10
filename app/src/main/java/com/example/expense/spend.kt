@@ -24,6 +24,7 @@ import java.text.DecimalFormat
 fun Expenses(
     navController: NavController,
     vm: ExpensesViewModel = viewModel()
+
 ) {
     val recurrences = listOf(
         Recurrence.Daily,

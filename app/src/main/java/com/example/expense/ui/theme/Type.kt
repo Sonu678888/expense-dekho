@@ -1,11 +1,19 @@
 package com.example.expense.ui.theme
+
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.Font
+
 import androidx.compose.ui.unit.sp
+import com.example.expense.R
 
 // Set of Material typography styles to start with
+
+
 val Typography = Typography(
     bodyMedium = TextStyle(
         fontFamily = FontFamily.Default,
@@ -49,4 +57,15 @@ val Typography = Typography(
         fontSize = 13.sp,
         lineHeight = 18.sp
     ),
+)
+val PoppinsFontFamily= FontFamily(
+    Font(R.font.poppins_black,FontWeight.Black),
+    Font(R.font.poppins_blackitalic,FontWeight.Medium),
+    Font(R.font.poppins_bold,FontWeight.Bold),
+    Font(R.font.poppins_extrabold,FontWeight.ExtraBold)
+)
+val exoFontFamily=FontFamily(
+    Font(R.font.exo2_black, FontWeight.Black),
+    Font(R.font.exo2_bold,FontWeight.Bold),
+    Font(R.font.exo2_extrabold, FontWeight.ExtraBold)
 )

@@ -25,17 +25,31 @@ private val DarkColorScheme = darkColorScheme(
     onBackground = TextPrimary,
     onSurface = TextPrimary,
     onError = TextPrimary,
+)
+
+private val LightColorScheme = lightColorScheme(
+    primary = Primary,
+background = Surface,
+surface = Surface,
+error = destroy,
+onPrimary = TextPrimary,
+onSecondary = TextPrimary,
+onBackground = TextPrimary,
+onSurface = TextPrimary,
+onError = TextPrimary,
 
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+
+
+/* Other default colors to override
+background = Color(0xFFFFFBFE),
+surface = Color(0xFFFFFBFE),
+onPrimary = Color.White,
+onSecondary = Color.White,
+onTertiary = Color.White,
+onBackground = Color(0xFF1C1B1F),
+onSurface = Color(0xFF1C1B1F),
+*/
 )
 
 @Composable
@@ -45,7 +59,7 @@ fun ExpenseTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = DarkColorScheme
+    val colorScheme = lightColorScheme()
 
 MaterialTheme(
       colorScheme = colorScheme,

@@ -38,7 +38,7 @@ val mockExpenses: List<Expense> = List(30) { index ->
                 Recurrence.Yearly
             )
         ),
-        note = faker.food.fruits(),
+        note = faker.food.dish(),
         category = faker.random.randomValue(mockCategories)
     )
 }

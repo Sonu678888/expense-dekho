@@ -11,8 +11,8 @@ import com.example.expense.groupedByDay
 @Composable
 fun ExpensesList(expenses: List<Expense>, modifier: Modifier = Modifier) {
     val groupedExpenses = expenses.groupedByDay()
-
-    Column(modifier = modifier) {
+    val context=
+        Column(modifier = modifier) {
         if (groupedExpenses.isEmpty()) {
             Text("No data for selected date range.", modifier = Modifier.padding(top = 32.dp))
         } else {
@@ -26,5 +26,6 @@ fun ExpensesList(expenses: List<Expense>, modifier: Modifier = Modifier) {
                 }
             }
         }
+
     }
 }
