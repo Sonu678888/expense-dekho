@@ -3,9 +3,10 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("io.sentry.android.gradle" )version "3.4.2"
     id ("io.realm.kotlin")
+    id("com.google.gms.google-services")
 }
 
-android {
+android{
     namespace = "com.example.expense"
     compileSdk = 34
 
@@ -75,6 +76,8 @@ dependencies {
     implementation("io.coil-kt:coil-gif:2.1.0")
     implementation ("io.coil-kt:coil-compose:2.1.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("com.google.firebase:firebase-auth:23.0.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
 
 
 

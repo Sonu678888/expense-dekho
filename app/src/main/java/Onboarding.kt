@@ -24,9 +24,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.expense.DotsIndicator
 import com.example.expense.OnboardingItem
 import com.example.expense.listdata
@@ -56,9 +58,12 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+import me.saket.swipe.rememberSwipeableActionsState
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OnboardingScreen(pages: List<OnboardingItem>,systemUiController: SystemUiController) {
+fun OnboardingScreen(pages: List<OnboardingItem>,systemUiController: SystemUiController,navController: NavController,
+                     onComplete: () -> Unit) {
     val pagerState = rememberPagerState()
     val scope= rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
@@ -137,7 +142,10 @@ fun OnboardingScreen(pages: List<OnboardingItem>,systemUiController: SystemUiCon
 
                 Spacer(modifier = Modifier.height(80.dp))
                 if(pagerState.currentPage==2) {
-                    ElevatedButton(onClick = {},
+                    ElevatedButton(onClick = {
+                        onComplete()
+                        navController.navigate("Login")
+                    },
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
                             .size(width = 327.dp, height = 54.dp)
@@ -145,7 +153,7 @@ fun OnboardingScreen(pages: List<OnboardingItem>,systemUiController: SystemUiCon
                         Text("GET STARTED",
                             fontFamily = exoFontFamily,
                             fontWeight = FontWeight.Bold,
-                            color=Color.Black,
+                            color=Color.White,
                             fontSize = 20.sp,
                             )
                     }
@@ -160,7 +168,7 @@ fun OnboardingScreen(pages: List<OnboardingItem>,systemUiController: SystemUiCon
                         Text(text = "Next",
                             fontFamily = exoFontFamily,
                             fontWeight = FontWeight.SemiBold,
-                            color=Color.Black,
+                            color=Color.White,
                             fontSize = 20.sp)
 
                     }
@@ -186,7 +194,8 @@ fun OnboardingPreview() {
     Surface(modifier = Modifier.fillMaxSize()) {
         ExpenseTheme {
             val systemUiController= rememberSystemUiController()
-            OnboardingScreen(pages = listdata,systemUiController)
+            val navController= rememberNavController()
+            OnboardingScreen(pages = listdata,systemUiController,navController, onComplete = {})
         }
     }
 }

@@ -10,9 +10,11 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.expense.DayExpenses
 import com.example.expense.formatDay
+import com.example.expense.ui.theme.ExpenseTheme
 import com.example.expense.ui.theme.LabelSecondary
 import com.example.expense.ui.theme.Typography
 import java.text.DecimalFormat

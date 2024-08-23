@@ -59,7 +59,7 @@ fun ExpenseTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = lightColorScheme()
+    val colorScheme = DarkColorScheme
 
 MaterialTheme(
       colorScheme = colorScheme,

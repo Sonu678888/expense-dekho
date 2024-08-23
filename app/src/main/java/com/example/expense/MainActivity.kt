@@ -2,6 +2,7 @@ package com.example.expense
 
 import OnboardingScreen
 import android.os.Bundle
+import android.widget.Toast
 import android.window.SplashScreen
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,12 +13,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -34,12 +37,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.expense.ui.theme.ExpenseTheme
+import com.example.expense.ui.theme.LightPink
 import com.example.expense.ui.theme.OffWhite
 import com.example.expense.ui.theme.PoppinsFontFamily
+import com.example.expense.ui.theme.Primary
 import com.example.expense.ui.theme.beige
+import com.example.expense.ui.theme.button_back
 import com.example.expense.ui.theme.exoFontFamily
 import com.example.expense.ui.theme.logo
 import com.example.expense.ui.theme.topAppBarBackground
+import com.example.expense.ui.theme.turqoise
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.delay
@@ -47,63 +54,106 @@ import kotlinx.coroutines.delay
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         installSplashScreen()
         setContent {
             ExpenseTheme {
                 val systemUiController = rememberSystemUiController()
                 val navController = rememberNavController()
-                NavHostSetup(navController,systemUiController)
+                NavHostSetup(navController,systemUiController, authViewModel = AuthViewModel())
             }
         }
     }
 
     @Composable
-    fun NavHostSetup(navController: NavHostController,systemUiController: SystemUiController) {
+    fun NavHostSetup(navController: NavHostController, systemUiController: SystemUiController, authViewModel: AuthViewModel) {
         var showBottomBar by rememberSaveable { mutableStateOf(false) }
         val backStackEntry by navController.currentBackStackEntryAsState()
+        val authstate = authViewModel.authState.observeAsState()
+        val context = LocalContext.current
+        val sharedPreferences = context.getSharedPreferences("onboarding_prefs", MODE_PRIVATE)
 
         LaunchedEffect(navController) {
             navController.currentBackStackEntryFlow.collect { entry ->
                 showBottomBar =
-                    !(entry.destination.route == "splashscreen" || entry.destination.route == "onboarding")
+                    !(entry.destination.route == "splashscreen" || entry.destination.route == "onboarding"
+                            || entry.destination.route == "Login" || entry.destination.route == "create")
             }
         }
 
-        NavHost(
-            navController = navController,
-            startDestination = "splashscreen"
+        LaunchedEffect(authstate.value) {
+            when (authstate.value) {
+                is AuthState.Authenticated -> {
+                    val hasCompletedOnboarding = sharedPreferences.getBoolean("completed_onboarding", false)
+                    if (hasCompletedOnboarding) {
+                        navController.navigate("expenses") {
+                            popUpTo("splashscreen") { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate("onboarding") {
+                            popUpTo("splashscreen") { inclusive = true }
+                        }
+                    }
+                }
+                is AuthState.Error -> Toast.makeText(context, (authstate.value as AuthState.Error).message, Toast.LENGTH_SHORT).show()
+                else -> Unit
+            }
+        }
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            composable("splashscreen") {
-                SplashScreen(navController,systemUiController)
+            Box(modifier = Modifier.weight(1f)) {
+                NavHost(
+                    navController = navController,
+                    startDestination = "splashscreen"
+                ) {
+                    composable("splashscreen") {
+                        SplashScreen(navController, systemUiController)
+                    }
+                    composable("expenses") {
+                        Expenses(navController,authViewModel= AuthViewModel())
+                    }
+                    composable("onboarding") {
+                        OnboardingScreen(pages = listdata, systemUiController, navController, onComplete = {
+                            sharedPreferences.edit().putBoolean("completed_onboarding", true).apply()
+                            navController.navigate("expenses") {
+                                popUpTo("onboarding") { inclusive = true }
+                            }
+                        })
+                    }
+                    composable("reports") {
+                        Reports()
+                    }
+                    composable("add") {
+                        Add(navController)
+                    }
+                    composable("settings") {
+                        Settings(navController)
+                    }
+                    composable("settings/categories") {
+                        Categories(navController)
+                    }
+                    composable("create") {
+                        SignInUi(navController, authViewModel = AuthViewModel())
+                    }
+                    composable("Login") {
+                        LogIn(navController, authViewModel = AuthViewModel())
+                    }
+                }
             }
-            composable("expenses") {
-                Expenses(navController)
-            }
-            composable("onboarding") {
-                OnboardingScreen(pages = listdata,systemUiController)
-            }
-            composable("reports") {
-                Reports()
-            }
-            composable("add") {
-                Add(navController)
-            }
-            composable("settings") {
-                Settings(navController)
-            }
-            composable("settings/categories") {
-                Categories(navController)
-            }
-        }
 
-        if (showBottomBar) {
-            BottomBar(navController, backStackEntry)
+            if (showBottomBar) {
+                BottomBar(navController, backStackEntry)
+            }
         }
     }
 
+
     @Composable
     fun BottomBar(navController: NavHostController, backStackEntry: NavBackStackEntry?) {
-        NavigationBar(containerColor = topAppBarBackground) {
+        NavigationBar(containerColor = Color.Black) {
             NavigationBarItem(
                 selected = backStackEntry?.destination?.route == "expenses",
                 onClick = { navController.navigate("expenses") },
@@ -185,7 +235,7 @@ class MainActivity : ComponentActivity() {
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
                     fontSize = 40.sp,
-                    color=Color.Black)
+                    color= Color.DarkGray)
 
             }
         }
