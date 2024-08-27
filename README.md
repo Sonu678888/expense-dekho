@@ -11,5 +11,9 @@ Welcome to the Expense Tracker App repository! This app helps you keep track of 
 - **Recurrence:** Set recurring expenses for daily, weekly, monthly, or yearly transactions.
 - **Dark Mode:** Supports dark mode for comfortable usage in low-light environments.
 
+## Demo
+https://github.com/user-attachments/assets/10e9ad9a-b17d-4648-9ad0-daba39f103b0
+
+
 
 
